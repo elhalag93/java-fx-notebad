@@ -1,0 +1,207 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package javafxapplication3;
+
+import java.io.File;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
+/**
+ *
+ * @author M Gamal
+ */
+public class JavaFXApplication3 extends Application {
+    MenuBar menu;
+    Menu file;
+    Menu edit;
+    Menu help;
+   TextArea text;
+   DirectoryChooser directoryChooser;
+   MenuItem item_2;
+   Stage primaryStage;
+        @Override
+        public void init(){
+            //define text area 
+                    text = new TextArea();
+            //define bordrpane
+             menu=new MenuBar();
+            // file menu
+             file= new Menu("file");
+            // items of file menu
+            MenuItem item_1=new MenuItem("new");
+                        item_1.setAccelerator(KeyCombination.keyCombination("Ctrl+n"));
+
+            // add event hadle on item_1
+            item_1.setOnAction(new EventHandler<ActionEvent>() {
+                 @Override
+                 public void handle(ActionEvent event) {   
+                     text.clear();
+                 }
+             });
+            // define item_2
+            MenuItem item_2=new MenuItem("open");
+                        item_2.setAccelerator(KeyCombination.keyCombination("Ctrl+d"));
+
+            //create dialoge
+            FileChooser fil_chooser = new FileChooser(); 
+            // add event hadle on item_2
+        item_2.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                 File file = fil_chooser.showOpenDialog(primaryStage); 
+                 text.setText(file.getAbsolutePath());     
+            }
+        });
+             // add event hadle on item_3
+            MenuItem item_3=new MenuItem("save");
+                        item_3.setAccelerator(KeyCombination.keyCombination("Ctrl+s"));
+
+             item_3.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                 File file_1 = fil_chooser.showSaveDialog(primaryStage); 
+                 text.setText(file_1.getAbsolutePath());     
+            }
+        });
+             // add event hadle on item_3
+            MenuItem item_4=new MenuItem("exit");
+                        item_4.setAccelerator(KeyCombination.keyCombination("Ctrl+e"));
+
+            item_4.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                 Platform.exit();
+            }
+        });
+            // add items to menu 
+            file.getItems().addAll(item_1,item_2,item_3,item_4);
+            //edit menu
+             edit= new Menu("edit");
+            // items of  edit menu 
+            MenuItem item_5=new MenuItem("undo");
+                item_5.setAccelerator(KeyCombination.keyCombination("Ctrl+b"));
+
+            item_5.setOnAction(new EventHandler() {
+                        @Override
+                        public void handle(Event event) {
+                            
+                            text.undo();
+                        }
+                    });
+            MenuItem item_6=new MenuItem("cut");
+                        item_6.setAccelerator(KeyCombination.keyCombination("Ctrl+x"));
+
+            item_6.setOnAction(new EventHandler() {
+                        @Override
+                        public void handle(Event event) {
+                            
+                            text.cut();
+                        }
+                    });
+            MenuItem item_7=new MenuItem("copy");
+                        item_7.setAccelerator(KeyCombination.keyCombination("Ctrl+c"));
+
+            item_7.setOnAction(new EventHandler() {
+                        @Override
+                        public void handle(Event event) {
+                            
+                            text.copy();
+                        }
+                    });
+            MenuItem item_8=new MenuItem("paste");
+                        item_8.setAccelerator(KeyCombination.keyCombination("Ctrl+v"));
+
+            item_8.setOnAction(new EventHandler() {
+                        @Override
+                        public void handle(Event event) {
+                            
+                            text.paste();
+                        }
+                    });
+            MenuItem item_9=new MenuItem("delet");
+            item_9.setAccelerator(KeyCombination.keyCombination("Ctrl+d"));
+            item_9.setOnAction(new EventHandler() {
+                        @Override
+                        public void handle(Event event) {
+                           
+                            text.deletePreviousChar();
+                        }
+                    });
+            MenuItem item_10=new MenuItem("select All");
+                        item_10.setAccelerator(KeyCombination.keyCombination("Ctrl+a"));
+
+            item_10.setOnAction(new EventHandler() {
+                        @Override
+                        public void handle(Event event) {
+                            
+                            text.selectAll();
+                        }
+                    });
+            // add items to menu 
+            edit.getItems().addAll(item_5,item_6,item_7,item_8,item_9,item_10);
+            //help menu
+             help= new Menu("help");
+            // items of help menu
+            MenuItem item_11=new MenuItem("about notebad");
+                        item_11.setAccelerator(KeyCombination.keyCombination("Ctrl+o"));
+
+            item_11.setOnAction(new EventHandler() {
+                        @Override
+                        public void handle(Event event) {
+                            
+    Alert alert = new Alert(AlertType.INFORMATION);
+alert.setTitle("Information Dialog");
+alert.setHeaderText("Look, an Information Dialog");
+alert.setContentText("this project builded by mohamed gamal mohamed awad elhalag iti intake 40 telecomapplication");
+alert.showAndWait();
+                           
+                        }
+                    });
+            // add items to menu 
+            help.getItems().addAll(item_11);
+            // attatch all menus to menubar
+            menu.getMenus().addAll(file,edit,help);}
+
+    @Override
+    public void start(Stage primaryStage){
+        
+        
+       BorderPane root = new BorderPane();
+//       VBox box = new VBox(text);
+        root.setTop(menu);
+        root.setCenter(text);
+        Scene scene =new Scene(root);
+        // attatch border_pain to scene
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        launch(args);
+    }
+    
+}
